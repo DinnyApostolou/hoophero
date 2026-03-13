@@ -18,21 +18,37 @@ export default function SignupPage() {
     setLoading(true);
     setError("");
     const supabase = createClient();
-    const { error: authError } = await supabase.auth.signUp({
+
+    const { data, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: { full_name: name },
-        emailRedirectTo: `${window.location.origin}/dashboard`,
       },
     });
+
     if (authError) {
       setError(authError.message);
       setLoading(false);
-    } else {
-      setLoading(false);
-      window.location.href = "/dashboard";
+      return;
     }
+
+    // If session exists, go straight to dashboard
+    if (data.session) {
+      window.location.href = "/dashboard";
+      return;
+    }
+
+    // If no session but user exists, email confirmation is on — tell them to check email
+    if (data.user && !data.session) {
+      setLoading(false);
+      setError("Check your email to confirm your account, then log in.");
+      return;
+    }
+
+    // Fallback
+    setLoading(false);
+    setError("Something went wrong. Try logging in instead.");
   }
 
   if (success) {
