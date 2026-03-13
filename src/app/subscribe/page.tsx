@@ -32,7 +32,7 @@ export default function SubscribePage() {
       window.location.href = data.url;
     } else {
       setLoading(false);
-      alert("Something went wrong. Please try again.");
+      alert("Error: " + (data.error || "Something went wrong. Please try again."));
     }
   }
 
