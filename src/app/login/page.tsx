@@ -21,7 +21,8 @@ export default function LoginPage() {
       setError(authError.message);
       setLoading(false);
     } else {
-      router.push("/dashboard");
+      router.refresh();
+      window.location.href = "/dashboard";
     }
   }
 
