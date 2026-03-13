@@ -559,7 +559,17 @@ export default function DrillsPage() {
                 </div>
                 {open && (
                   <div style={{ padding: "0 24px 24px", borderTop: "1px solid #1a1a1a" }}>
-                    <h4 style={{ color: "#888", fontSize: "12px", letterSpacing: "1px", fontWeight: 700, marginBottom: "12px", marginTop: "16px" }}>HOW TO DO IT:</h4>
+                    {/* YouTube Tutorial Button */}
+                    <a
+                      href={`https://www.youtube.com/results?search_query=${encodeURIComponent(drill.title + " basketball drill tutorial")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#FF0000", color: "#fff", textDecoration: "none", padding: "10px 18px", borderRadius: "8px", fontSize: "13px", fontWeight: 700, marginTop: "16px", marginBottom: "20px" }}
+                    >
+                      ▶ Watch Tutorial on YouTube
+                    </a>
+
+                    <h4 style={{ color: "#888", fontSize: "12px", letterSpacing: "1px", fontWeight: 700, marginBottom: "12px", marginTop: "4px" }}>HOW TO DO IT:</h4>
                     <ol style={{ paddingLeft: "20px", margin: "0 0 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
                       {drill.steps.map((step, i) => (
                         <li key={i} style={{ color: "#ccc", fontSize: "14px", lineHeight: 1.6 }}>{step}</li>
