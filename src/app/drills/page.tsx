@@ -554,6 +554,9 @@ export default function DrillsPage() {
                     ) : (
                       <div style={{ color: "#FF6B00", fontSize: "13px", fontWeight: 700 }}>+50 XP</div>
                     )}
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#FF0000", color: "#fff", padding: "5px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: 700 }}>
+                      ▶ Tutorial
+                    </div>
                     <span style={{ color: "#444", fontSize: "18px" }}>{open ? "▲" : "▼"}</span>
                   </div>
                 </div>
