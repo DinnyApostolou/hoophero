@@ -14,16 +14,7 @@ export async function POST(request: NextRequest) {
       mode: "subscription",
       line_items: [
         {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: "HoopHero Pro",
-              description: "Full access to all drills, XP tracking, leaderboard, and trivia. Level up your game.",
-              images: [],
-            },
-            unit_amount: 700, // $7.00
-            recurring: { interval: "month" },
-          },
+          price: "price_1TAYRNCuuvmUYDIJiWGXOps4",
           quantity: 1,
         },
       ],
