@@ -30,10 +30,8 @@ export default function SignupPage() {
       setError(authError.message);
       setLoading(false);
     } else {
-      setSuccess(true);
       setLoading(false);
-      // Try to redirect immediately (works if email confirmation is disabled)
-      setTimeout(() => router.push("/dashboard"), 2000);
+      window.location.href = "/dashboard";
     }
   }
 
