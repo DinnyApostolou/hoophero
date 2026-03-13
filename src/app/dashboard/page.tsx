@@ -113,6 +113,8 @@ export default function DashboardPage() {
           <Link href="/strength" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Strength</Link>
           <Link href="/nutrition" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Nutrition</Link>
           <Link href="/schedule" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Schedule</Link>
+          <Link href="/stats" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>My Stats</Link>
+          <Link href="/badges" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Badges</Link>
           <Link href="/leaderboard" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Leaderboard</Link>
           {!profile?.is_subscribed && (
             <Link href="/subscribe" style={{ background: "linear-gradient(135deg, #FF6B00, #FF9500)", color: "#fff", textDecoration: "none", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 700 }}>
@@ -225,6 +227,9 @@ export default function DashboardPage() {
             { href: "/strength", icon: "💪", title: "Strength Trainer", sub: "Build muscle for basketball", color: "#3B82F6" },
             { href: "/nutrition", icon: "🥗", title: "Meal Planner", sub: "Pre & post game meals", color: "#10B981" },
             { href: "/schedule", icon: "📅", title: "Weekly Schedule", sub: "Full training week plan", color: "#FFD700" },
+            { href: "/assessment", icon: "🎯", title: "Skill Assessment", sub: "Get your personal plan", color: "#FF6B00" },
+            { href: "/stats", icon: "📊", title: "My Stats", sub: "Your player card & ratings", color: "#3B82F6" },
+            { href: "/badges", icon: "🏅", title: "My Badges", sub: "Collect rare achievements", color: "#FFD700" },
             { href: "/leaderboard", icon: "🏆", title: "Leaderboard", sub: "See how you rank", color: "#8B5CF6" },
           ].map(item => (
             <Link key={item.href} href={item.href} style={{ background: "#111", border: `1px solid #222`, borderRadius: "16px", padding: "22px", textDecoration: "none", display: "flex", alignItems: "center", gap: "14px", transition: "border-color 0.2s" }}>
