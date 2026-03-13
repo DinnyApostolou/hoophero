@@ -82,7 +82,24 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p style={{ textAlign: "center", marginTop: "24px", color: "#555", fontSize: "14px" }}>
+          <p style={{ textAlign: "center", marginTop: "16px", color: "#555", fontSize: "13px" }}>
+            <button
+              type="button"
+              onClick={async () => {
+                if (!email) { setError("Enter your email above first."); return; }
+                const supabase = createClient();
+                const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+                  redirectTo: `${window.location.origin}/reset-password`,
+                });
+                if (resetError) { setError(resetError.message); }
+                else { setError(""); alert("Password reset email sent! Check your inbox."); }
+              }}
+              style={{ background: "none", border: "none", color: "#555", cursor: "pointer", fontSize: "13px", textDecoration: "underline" }}
+            >
+              Forgot password?
+            </button>
+          </p>
+          <p style={{ textAlign: "center", marginTop: "12px", color: "#555", fontSize: "14px" }}>
             No account?{" "}
             <Link href="/signup" style={{ color: "#FF6B00", fontWeight: 700, textDecoration: "none" }}>
               Sign up free
