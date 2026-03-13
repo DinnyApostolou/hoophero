@@ -7,7 +7,8 @@ const supabaseKey =
 
 let _client: ReturnType<typeof createSupabaseClient> | null = null;
 
-export function createClient() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createClient(): any {
   if (!_client) {
     _client = createSupabaseClient(supabaseUrl, supabaseKey, {
       auth: {

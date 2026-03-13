@@ -27,23 +27,39 @@ export default function DashboardPage() {
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    async function load() {
-      const supabase = createClient();
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) { router.push("/login"); return; }
-      const user = session.user;
-      setUserName(user.user_metadata?.full_name || user.email?.split("@")[0] || "Hooper");
-      const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+    const supabase = createClient();
+
+    async function loadProfile(userId: string, userMeta: Record<string, string>, userEmail: string) {
+      setUserName(userMeta?.full_name || userEmail?.split("@")[0] || "Hooper");
+      const { data } = await supabase.from("profiles").select("*").eq("id", userId).single();
       if (data) {
         setProfile(data);
       } else {
-        const newProfile = { id: user.id, full_name: user.user_metadata?.full_name || "", xp: 0, streak: 0, drills_completed: 0, is_subscribed: false };
-        await supabase.from("profiles").insert(newProfile);
+        const newProfile = { id: userId, full_name: userMeta?.full_name || "", xp: 0, streak: 0, drills_completed: 0, is_subscribed: false };
+        await supabase.from("profiles").insert(newProfile as never);
         setProfile(newProfile);
       }
       setLoading(false);
     }
-    load();
+
+    // Check existing session first
+    supabase.auth.getSession().then(({ data }: { data: { session: { user: { id: string; email?: string; user_metadata: Record<string, string> } } | null } }) => {
+      const session = data.session;
+      if (session?.user) {
+        loadProfile(session.user.id, session.user.user_metadata as Record<string, string>, session.user.email || "");
+      }
+    });
+
+    // Also listen for auth changes (catches login redirect)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: string, session: { user: { id: string; email?: string; user_metadata: Record<string, string> } } | null) => {
+      if (session?.user) {
+        loadProfile(session.user.id, session.user.user_metadata as Record<string, string>, session.user.email || "");
+      } else {
+        router.push("/login");
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, [router]);
 
   async function handleSignOut() {
