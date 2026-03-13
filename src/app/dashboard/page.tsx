@@ -29,8 +29,9 @@ export default function DashboardPage() {
   useEffect(() => {
     async function load() {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { router.push("/login"); return; }
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { router.push("/login"); return; }
+      const user = session.user;
       setUserName(user.user_metadata?.full_name || user.email?.split("@")[0] || "Hooper");
       const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
       if (data) {
