@@ -449,12 +449,16 @@ const catColor: Record<string, string> = {
   CONDITIONING: "#EF4444",
 };
 
+const FREE_DRILL_LIMIT = 5;
+
 export default function DrillsPage() {
   const [expanded, setExpanded] = useState<number | null>(null);
   const [completed, setCompleted] = useState<number[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [filter, setFilter] = useState("ALL");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [lockedMsg, setLockedMsg] = useState<number | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -462,6 +466,8 @@ export default function DrillsPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
       setUserId(user.id);
+      const { data: profile } = await supabase.from("profiles").select("is_subscribed").eq("id", user.id).single();
+      if (profile) setIsSubscribed(!!profile.is_subscribed);
       const { data } = await supabase.from("completed_drills").select("drill_id").eq("user_id", user.id);
       if (data) setCompleted(data.map((d) => d.drill_id));
     }
@@ -489,6 +495,12 @@ export default function DrillsPage() {
   const categories = ["ALL", "DRIBBLING", "SHOOTING", "FOOTWORK", "DEFENSE", "CONDITIONING"];
   const filtered = filter === "ALL" ? DRILLS : DRILLS.filter((d) => d.category === filter);
 
+  // A drill is free if it's among the first FREE_DRILL_LIMIT drills (by id, 1-based)
+  function isDrillLocked(drillId: number) {
+    if (isSubscribed) return false;
+    return drillId > FREE_DRILL_LIMIT;
+  }
+
   return (
     <div style={{ backgroundColor: "#0A0A0A", minHeight: "100vh", fontFamily: "system-ui, sans-serif" }}>
       {toast && (
@@ -514,12 +526,28 @@ export default function DrillsPage() {
         <p style={{ color: "#666", margin: "0 0 24px" }}>60 drills across 5 categories. Earn <span style={{ color: "#FF6B00", fontWeight: 700 }}>+50 XP</span> per drill.</p>
 
         {userId && (
-          <div style={{ background: "#111", border: "1px solid #222", borderRadius: "12px", padding: "16px 20px", marginBottom: "28px", display: "flex", alignItems: "center", gap: "16px" }}>
+          <div style={{ background: "#111", border: "1px solid #222", borderRadius: "12px", padding: "16px 20px", marginBottom: "16px", display: "flex", alignItems: "center", gap: "16px" }}>
             <span style={{ fontSize: "14px", color: "#888" }}>{completed.length}/{DRILLS.length} completed</span>
             <div style={{ flex: 1, background: "#1a1a1a", borderRadius: "4px", height: "8px", overflow: "hidden" }}>
               <div style={{ width: `${(completed.length / DRILLS.length) * 100}%`, height: "100%", background: "linear-gradient(90deg, #FF6B00, #FFD700)", transition: "width 0.5s ease" }} />
             </div>
             <span style={{ fontSize: "14px", color: "#FF6B00", fontWeight: 700 }}>{completed.length * 50} XP</span>
+          </div>
+        )}
+
+        {/* Free trial notice for non-subscribed users */}
+        {userId && !isSubscribed && (
+          <div style={{ background: "linear-gradient(135deg, #1a0800, #111)", border: "1px solid rgba(255,107,0,0.4)", borderRadius: "12px", padding: "16px 20px", marginBottom: "28px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <span style={{ fontSize: "20px" }}>🔒</span>
+              <div>
+                <div style={{ fontSize: "13px", fontWeight: 700, color: "#FF6B00" }}>FREE TRIAL — 5 DRILLS UNLOCKED</div>
+                <div style={{ fontSize: "12px", color: "#555" }}>Subscribe for $7/month to unlock all 60 drills</div>
+              </div>
+            </div>
+            <Link href="/subscribe" style={{ background: "linear-gradient(135deg, #FF6B00, #FF9500)", color: "#fff", textDecoration: "none", padding: "10px 18px", borderRadius: "8px", fontSize: "13px", fontWeight: 800, whiteSpace: "nowrap" }}>
+              Unlock All →
+            </Link>
           </div>
         )}
 
@@ -535,32 +563,63 @@ export default function DrillsPage() {
           {filtered.map((drill) => {
             const done = completed.includes(drill.id);
             const open = expanded === drill.id;
+            const locked = isDrillLocked(drill.id);
             return (
-              <div key={drill.id} style={{ background: done ? "rgba(16,185,129,0.05)" : "#111", border: `1px solid ${done ? "rgba(16,185,129,0.3)" : "#222"}`, borderRadius: "16px", overflow: "hidden" }}>
-                <div onClick={() => setExpanded(open ? null : drill.id)} style={{ padding: "20px 24px", cursor: "pointer", display: "flex", alignItems: "center", gap: "16px" }}>
-                  <div style={{ fontSize: "32px", flexShrink: 0 }}>{drill.icon}</div>
+              <div key={drill.id} style={{ background: locked ? "rgba(255,255,255,0.02)" : done ? "rgba(16,185,129,0.05)" : "#111", border: `1px solid ${locked ? "#1a1a1a" : done ? "rgba(16,185,129,0.3)" : "#222"}`, borderRadius: "16px", overflow: "hidden", opacity: locked ? 0.55 : 1 }}>
+                <div
+                  onClick={() => {
+                    if (locked) {
+                      setLockedMsg(lockedMsg === drill.id ? null : drill.id);
+                      return;
+                    }
+                    setLockedMsg(null);
+                    setExpanded(open ? null : drill.id);
+                  }}
+                  style={{ padding: "20px 24px", cursor: "pointer", display: "flex", alignItems: "center", gap: "16px" }}
+                >
+                  <div style={{ fontSize: "32px", flexShrink: 0, filter: locked ? "grayscale(1)" : "none" }}>{locked ? "🔒" : drill.icon}</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px", flexWrap: "wrap" }}>
-                      <span style={{ fontSize: "11px", fontWeight: 700, color: catColor[drill.category], letterSpacing: "0.5px" }}>{drill.category}</span>
-                      <span style={{ fontSize: "11px", color: diffColor[drill.difficulty], background: `${diffColor[drill.difficulty]}22`, padding: "2px 8px", borderRadius: "4px", fontWeight: 600 }}>{drill.difficulty}</span>
+                      <span style={{ fontSize: "11px", fontWeight: 700, color: locked ? "#444" : catColor[drill.category], letterSpacing: "0.5px" }}>{drill.category}</span>
+                      <span style={{ fontSize: "11px", color: locked ? "#333" : diffColor[drill.difficulty], background: locked ? "#1a1a1a" : `${diffColor[drill.difficulty]}22`, padding: "2px 8px", borderRadius: "4px", fontWeight: 600 }}>{drill.difficulty}</span>
                       <span style={{ fontSize: "11px", color: "#555" }}>⏱ {drill.time}</span>
                     </div>
-                    <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#fff", margin: "0 0 4px" }}>{drill.title}</h3>
-                    <p style={{ fontSize: "13px", color: "#666", margin: 0 }}>{drill.desc}</p>
+                    <h3 style={{ fontSize: "16px", fontWeight: 800, color: locked ? "#444" : "#fff", margin: "0 0 4px" }}>{drill.title}</h3>
+                    <p style={{ fontSize: "13px", color: locked ? "#333" : "#666", margin: 0 }}>{locked ? "Subscribe to unlock this drill" : drill.desc}</p>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flexShrink: 0 }}>
-                    {done ? (
+                    {locked ? (
+                      <div style={{ color: "#444", fontSize: "22px" }}>🔒</div>
+                    ) : done ? (
                       <div style={{ background: "#10B981", color: "#fff", padding: "8px 14px", borderRadius: "8px", fontSize: "13px", fontWeight: 700 }}>✓ Done</div>
                     ) : (
                       <div style={{ color: "#FF6B00", fontSize: "13px", fontWeight: 700 }}>+50 XP</div>
                     )}
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#FF0000", color: "#fff", padding: "5px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: 700 }}>
-                      ▶ Tutorial
-                    </div>
-                    <span style={{ color: "#444", fontSize: "18px" }}>{open ? "▲" : "▼"}</span>
+                    {!locked && (
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#FF0000", color: "#fff", padding: "5px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: 700 }}>
+                        ▶ Tutorial
+                      </div>
+                    )}
+                    <span style={{ color: "#444", fontSize: "18px" }}>{locked ? "" : open ? "▲" : "▼"}</span>
                   </div>
                 </div>
-                {open && (
+
+                {/* Locked inline message */}
+                {locked && lockedMsg === drill.id && (
+                  <div style={{ padding: "0 24px 20px", borderTop: "1px solid #1a1a1a" }}>
+                    <div style={{ background: "linear-gradient(135deg, #1a0800, #0f0600)", border: "1px solid rgba(255,107,0,0.3)", borderRadius: "12px", padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px", marginTop: "16px" }}>
+                      <div>
+                        <div style={{ fontSize: "14px", fontWeight: 700, color: "#FF6B00", marginBottom: "4px" }}>🔒 This drill is locked</div>
+                        <div style={{ fontSize: "13px", color: "#666" }}>Subscribe to unlock all 60 drills — <strong style={{ color: "#FF6B00" }}>$7/month</strong></div>
+                      </div>
+                      <Link href="/subscribe" style={{ background: "linear-gradient(135deg, #FF6B00, #FF9500)", color: "#fff", textDecoration: "none", padding: "10px 18px", borderRadius: "8px", fontSize: "13px", fontWeight: 800, whiteSpace: "nowrap" }}>
+                        Subscribe Now →
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {open && !locked && (
                   <div style={{ padding: "0 24px 24px", borderTop: "1px solid #1a1a1a" }}>
                     {/* YouTube Tutorial Button */}
                     <a

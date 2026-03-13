@@ -10,7 +10,10 @@ type Profile = {
   streak: number;
   drills_completed: number;
   is_subscribed?: boolean;
+  avatar?: string;
 };
+
+const AVATAR_OPTIONS = ["🏀", "⚡", "🔥", "💪", "🏆", "🎯", "🌟", "👑", "💎", "🚀", "🐐", "🏅"];
 
 function getLevel(xp: number) {
   if (xp < 200) return { name: "Rookie", next: 200, color: "#888", prev: 0 };
@@ -37,6 +40,9 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
+  const [avatar, setAvatar] = useState("🏀");
+  const [showPicker, setShowPicker] = useState(false);
+  const [savingAvatar, setSavingAvatar] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -46,6 +52,7 @@ export default function DashboardPage() {
       const { data } = await supabase.from("profiles").select("*").eq("id", userId).single();
       if (data) {
         setProfile(data);
+        if (data.avatar) setAvatar(data.avatar);
       } else {
         const newProfile = { id: userId, full_name: userMeta?.full_name || "", xp: 0, streak: 0, drills_completed: 0, is_subscribed: false };
         await supabase.from("profiles").insert(newProfile as never);
@@ -76,6 +83,24 @@ export default function DashboardPage() {
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/");
+  }
+
+  async function pickAvatar(emoji: string) {
+    setAvatar(emoji);
+    setShowPicker(false);
+    setSavingAvatar(true);
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Silently update — fails gracefully if column doesn't exist
+        await supabase.from("profiles").update({ avatar: emoji } as never).eq("id", user.id);
+      }
+    } catch {
+      // fail silently
+    } finally {
+      setSavingAvatar(false);
+    }
   }
 
   if (loading) {
@@ -128,11 +153,41 @@ export default function DashboardPage() {
       </nav>
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 24px" }}>
-        <div style={{ marginBottom: "32px" }}>
-          <h1 style={{ fontSize: "32px", fontWeight: 900, color: "#fff", margin: "0 0 4px" }}>
-            Welcome back, {userName} 👋
-          </h1>
-          <p style={{ color: "#666", margin: 0 }}>Ready to level up today?</p>
+        <div style={{ marginBottom: "32px", display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap" }}>
+          {/* Avatar */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", flexShrink: 0, position: "relative" }}>
+            <div style={{ width: "80px", height: "80px", borderRadius: "50%", background: "linear-gradient(135deg, #1a1a1a, #222)", border: "2px solid #2a2a2a", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "42px", boxShadow: "0 0 20px rgba(255,107,0,0.15)" }}>
+              {avatar}
+            </div>
+            <button
+              onClick={() => setShowPicker(!showPicker)}
+              style={{ background: "transparent", border: "1px solid #2a2a2a", color: "#555", borderRadius: "6px", padding: "4px 10px", fontSize: "11px", cursor: "pointer", fontWeight: 600 }}
+            >
+              {savingAvatar ? "saving…" : "change"}
+            </button>
+            {showPicker && (
+              <div style={{ position: "absolute", zIndex: 50, background: "#111", border: "1px solid #2a2a2a", borderRadius: "16px", padding: "16px", boxShadow: "0 20px 60px rgba(0,0,0,0.8)", marginTop: "96px" }}>
+                <div style={{ fontSize: "11px", color: "#555", fontWeight: 700, letterSpacing: "1px", marginBottom: "12px", textTransform: "uppercase" }}>Pick Your Avatar</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "8px" }}>
+                  {AVATAR_OPTIONS.map((emoji) => (
+                    <button
+                      key={emoji}
+                      onClick={() => pickAvatar(emoji)}
+                      style={{ background: avatar === emoji ? "rgba(255,107,0,0.2)" : "#0d0d0d", border: `2px solid ${avatar === emoji ? "#FF6B00" : "#1e1e1e"}`, borderRadius: "10px", padding: "10px", fontSize: "24px", cursor: "pointer", transition: "all 0.15s" }}
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <div>
+            <h1 style={{ fontSize: "32px", fontWeight: 900, color: "#fff", margin: "0 0 4px" }}>
+              Welcome back, {userName} 👋
+            </h1>
+            <p style={{ color: "#666", margin: 0 }}>Ready to level up today?</p>
+          </div>
         </div>
 
         {/* Duolingo-style streak banner */}
