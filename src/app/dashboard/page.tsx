@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
+import ThemeToggle from "@/components/ThemeToggle";
 
 type Profile = {
   full_name: string;
@@ -105,7 +106,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div style={{ backgroundColor: "#0A0A0A", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, sans-serif" }}>
+      <div style={{ backgroundColor: "var(--bg)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, sans-serif" }}>
         <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: "48px", marginBottom: "16px" }}>🏀</div>
           <p style={{ color: "#666" }}>Loading your stats...</p>
@@ -127,20 +128,20 @@ export default function DashboardPage() {
   const streakProgress = Math.min(100, Math.round(((streak - prevMilestone) / (nextMilestone - prevMilestone)) * 100));
 
   return (
-    <div style={{ backgroundColor: "#0A0A0A", minHeight: "100vh", fontFamily: "system-ui, sans-serif" }}>
-      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 32px", borderBottom: "1px solid #1a1a1a" }}>
+    <div style={{ backgroundColor: "var(--bg)", minHeight: "100vh", fontFamily: "system-ui, sans-serif" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 32px", borderBottom: "1px solid var(--border)" }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
           <span style={{ fontSize: "22px" }}>🏀</span>
           <span style={{ fontSize: "18px", fontWeight: 900, background: "linear-gradient(90deg, #FF6B00, #FFD700)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>HOOPHERO</span>
         </Link>
         <div style={{ display: "flex", gap: "16px", alignItems: "center", flexWrap: "wrap" }}>
-          <Link href="/drills" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Drills</Link>
-          <Link href="/strength" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Strength</Link>
-          <Link href="/nutrition" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Nutrition</Link>
-          <Link href="/schedule" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Schedule</Link>
-          <Link href="/stats" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>My Stats</Link>
-          <Link href="/badges" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Badges</Link>
-          <Link href="/leaderboard" style={{ color: "#aaa", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Leaderboard</Link>
+          <Link href="/drills" style={{ color: "var(--text2)", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Drills</Link>
+          <Link href="/strength" style={{ color: "var(--text2)", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Strength</Link>
+          <Link href="/nutrition" style={{ color: "var(--text2)", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Nutrition</Link>
+          <Link href="/schedule" style={{ color: "var(--text2)", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Schedule</Link>
+          <Link href="/stats" style={{ color: "var(--text2)", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>My Stats</Link>
+          <Link href="/badges" style={{ color: "var(--text2)", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Badges</Link>
+          <Link href="/leaderboard" style={{ color: "var(--text2)", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>Leaderboard</Link>
           {!profile?.is_subscribed && (
             <Link href="/subscribe" style={{ background: "linear-gradient(135deg, #FF6B00, #FF9500)", color: "#fff", textDecoration: "none", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 700 }}>
               Subscribe $7/mo
@@ -183,7 +184,7 @@ export default function DashboardPage() {
             )}
           </div>
           <div>
-            <h1 style={{ fontSize: "32px", fontWeight: 900, color: "#fff", margin: "0 0 4px" }}>
+            <h1 style={{ fontSize: "32px", fontWeight: 900, color: "var(--text)", margin: "0 0 4px" }}>
               Welcome back, {userName} 👋
             </h1>
             <p style={{ color: "#666", margin: 0 }}>Ready to level up today?</p>
@@ -191,7 +192,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Duolingo-style streak banner */}
-        <div style={{ background: streak > 0 ? "linear-gradient(135deg, #1a0a00, #110800)" : "#111", border: `1px solid ${streak > 0 ? "#FF6B0066" : "#222"}`, borderRadius: "20px", padding: "24px 28px", marginBottom: "32px" }}>
+        <div style={{ background: streak > 0 ? "linear-gradient(135deg, #1a0a00, #110800)" : "var(--bg2)", border: `1px solid ${streak > 0 ? "#FF6B0066" : "var(--border)"}`, borderRadius: "20px", padding: "24px 28px", marginBottom: "32px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
               <div style={{ fontSize: "56px", lineHeight: 1 }}>{streak > 0 ? "🔥" : "💤"}</div>
@@ -199,7 +200,7 @@ export default function DashboardPage() {
                 <div style={{ fontSize: "42px", fontWeight: 900, color: streak > 0 ? "#FF6B00" : "#444", lineHeight: 1 }}>{streak}</div>
                 <div style={{ fontSize: "14px", color: "#666", marginTop: "2px" }}>day streak</div>
               </div>
-              <div style={{ borderLeft: "1px solid #222", paddingLeft: "16px" }}>
+              <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: "16px" }}>
                 <div style={{ fontSize: "14px", fontWeight: 700, color: streakInfo.color }}>{streakInfo.msg}</div>
                 <div style={{ fontSize: "12px", color: "#555", marginTop: "4px" }}>Next goal: {nextMilestone} days 🎯</div>
               </div>
@@ -235,14 +236,14 @@ export default function DashboardPage() {
 
         {/* Stats grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "32px" }}>
-          <div style={{ background: "#111", border: "1px solid #222", borderRadius: "16px", padding: "24px" }}>
-            <div style={{ fontSize: "12px", color: "#666", letterSpacing: "1px", marginBottom: "8px" }}>TOTAL XP</div>
+          <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "16px", padding: "24px" }}>
+            <div style={{ fontSize: "12px", color: "var(--text3)", letterSpacing: "1px", marginBottom: "8px" }}>TOTAL XP</div>
             <div style={{ fontSize: "36px", fontWeight: 900, color: "#FF6B00" }}>{xp.toLocaleString()}</div>
-            <div style={{ fontSize: "12px", color: "#444", marginTop: "4px" }}>XP Points</div>
+            <div style={{ fontSize: "12px", color: "var(--text3)", marginTop: "4px" }}>XP Points</div>
           </div>
 
-          <div style={{ background: "#111", border: `1px solid ${level.color}44`, borderRadius: "16px", padding: "24px" }}>
-            <div style={{ fontSize: "12px", color: "#666", letterSpacing: "1px", marginBottom: "8px" }}>LEVEL</div>
+          <div style={{ background: "var(--bg2)", border: `1px solid ${level.color}44`, borderRadius: "16px", padding: "24px" }}>
+            <div style={{ fontSize: "12px", color: "var(--text3)", letterSpacing: "1px", marginBottom: "8px" }}>LEVEL</div>
             <div style={{ fontSize: "36px", fontWeight: 900, color: level.color }}>{level.name}</div>
             <div style={{ marginTop: "12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
@@ -255,10 +256,10 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div style={{ background: "#111", border: "1px solid #222", borderRadius: "16px", padding: "24px" }}>
-            <div style={{ fontSize: "12px", color: "#666", letterSpacing: "1px", marginBottom: "8px" }}>DRILLS DONE</div>
+          <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "16px", padding: "24px" }}>
+            <div style={{ fontSize: "12px", color: "var(--text3)", letterSpacing: "1px", marginBottom: "8px" }}>DRILLS DONE</div>
             <div style={{ fontSize: "36px", fontWeight: 900, color: "#10B981" }}>{drillsDone}</div>
-            <div style={{ fontSize: "12px", color: "#444", marginTop: "4px" }}>Total completed</div>
+            <div style={{ fontSize: "12px", color: "var(--text3)", marginTop: "4px" }}>Total completed</div>
           </div>
         </div>
 
@@ -287,16 +288,18 @@ export default function DashboardPage() {
             { href: "/badges", icon: "🏅", title: "My Badges", sub: "Collect rare achievements", color: "#FFD700" },
             { href: "/leaderboard", icon: "🏆", title: "Leaderboard", sub: "See how you rank", color: "#8B5CF6" },
           ].map(item => (
-            <Link key={item.href} href={item.href} style={{ background: "#111", border: `1px solid #222`, borderRadius: "16px", padding: "22px", textDecoration: "none", display: "flex", alignItems: "center", gap: "14px", transition: "border-color 0.2s" }}>
+            <Link key={item.href} href={item.href} style={{ background: "var(--bg2)", border: `1px solid var(--border)`, borderRadius: "16px", padding: "22px", textDecoration: "none", display: "flex", alignItems: "center", gap: "14px", transition: "border-color 0.2s" }}>
               <div style={{ fontSize: "30px" }}>{item.icon}</div>
               <div>
-                <div style={{ fontSize: "14px", fontWeight: 800, color: "#fff" }}>{item.title}</div>
+                <div style={{ fontSize: "14px", fontWeight: 800, color: "var(--text)" }}>{item.title}</div>
                 <div style={{ fontSize: "12px", color: "#555", marginTop: "2px" }}>{item.sub}</div>
               </div>
             </Link>
           ))}
         </div>
       </div>
+
+      <ThemeToggle />
     </div>
   );
 }

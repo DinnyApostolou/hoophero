@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const faqs = [
   {
@@ -53,10 +54,10 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div style={{ backgroundColor: "#0A0A0A", minHeight: "100vh", color: "#fff", fontFamily: "system-ui, -apple-system, sans-serif", overflowX: "hidden" }}>
+    <div style={{ backgroundColor: "var(--bg)", minHeight: "100vh", color: "var(--text)", fontFamily: "system-ui, -apple-system, sans-serif", overflowX: "hidden" }}>
 
       {/* NAV */}
-      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 40px", borderBottom: "1px solid #1a1a1a", position: "sticky", top: 0, background: "rgba(10,10,10,0.95)", backdropFilter: "blur(12px)", zIndex: 100 }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 40px", borderBottom: "1px solid var(--border)", position: "sticky", top: 0, background: "rgba(10,10,10,0.95)", backdropFilter: "blur(12px)", zIndex: 100 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <span style={{ fontSize: "28px" }}>🏀</span>
           <span style={{ fontSize: "22px", fontWeight: 900, background: "linear-gradient(90deg, #FF6B00, #FFD700)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", letterSpacing: "-0.5px" }}>
@@ -64,7 +65,7 @@ export default function Home() {
           </span>
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <Link href="/login" style={{ color: "#aaa", textDecoration: "none", padding: "10px 20px", borderRadius: "8px", border: "1px solid #2a2a2a", fontSize: "14px", fontWeight: 600, transition: "all 0.2s" }}>
+          <Link href="/login" style={{ color: "var(--text2)", textDecoration: "none", padding: "10px 20px", borderRadius: "8px", border: "1px solid var(--border)", fontSize: "14px", fontWeight: 600, transition: "all 0.2s" }}>
             Login
           </Link>
           <Link href="/signup" style={{ background: "linear-gradient(135deg, #FF6B00, #FF9500)", color: "#fff", textDecoration: "none", padding: "10px 24px", borderRadius: "8px", fontSize: "14px", fontWeight: 800, boxShadow: "0 0 20px rgba(255,107,0,0.35)" }}>
@@ -102,7 +103,7 @@ export default function Home() {
       </section>
 
       {/* STATS BAR */}
-      <section style={{ borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a", padding: "40px 40px" }}>
+      <section style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "40px 40px" }}>
         <div style={{ display: "flex", justifyContent: "center", gap: "clamp(32px, 6vw, 80px)", flexWrap: "wrap", maxWidth: "900px", margin: "0 auto" }}>
           {[
             { num: "60+", label: "Elite Drills" },
@@ -137,10 +138,10 @@ export default function Home() {
             { icon: "🏅", title: "Badges", desc: "Unlock 20+ rare achievements like Sharpshooter, Crossover King, and Iron Man for training milestones.", color: "#FFD700" },
             { icon: "🔥", title: "Daily Streaks", desc: "Train every day to build your streak. The longer it goes, the more addicted you get. Don't break it.", color: "#EF4444" },
           ].map((f) => (
-            <div key={f.title} style={{ background: "#111", border: "1px solid #1e1e1e", borderRadius: "20px", padding: "32px 28px", transition: "all 0.2s", cursor: "default" }}>
+            <div key={f.title} style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "20px", padding: "32px 28px", transition: "all 0.2s", cursor: "default" }}>
               <div style={{ fontSize: "36px", marginBottom: "16px" }}>{f.icon}</div>
               <div style={{ width: "36px", height: "3px", background: f.color, borderRadius: "2px", marginBottom: "16px" }} />
-              <h3 style={{ fontSize: "17px", fontWeight: 800, marginBottom: "10px", color: "#fff", margin: "0 0 10px" }}>{f.title}</h3>
+              <h3 style={{ fontSize: "17px", fontWeight: 800, marginBottom: "10px", color: "var(--text)", margin: "0 0 10px" }}>{f.title}</h3>
               <p style={{ fontSize: "14px", color: "#555", lineHeight: 1.7, margin: 0 }}>{f.desc}</p>
             </div>
           ))}
@@ -148,7 +149,7 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" style={{ padding: "100px 40px", background: "linear-gradient(180deg, #0A0A0A 0%, #0d0d0d 50%, #0A0A0A 100%)", borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a" }}>
+      <section id="how-it-works" style={{ padding: "100px 40px", background: "var(--bg)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
           <p style={{ color: "#FF6B00", fontSize: "13px", fontWeight: 700, letterSpacing: "2px", marginBottom: "12px", textTransform: "uppercase" }}>Simple to Start</p>
           <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 900, margin: "0 0 64px", letterSpacing: "-2px" }}>HOW IT WORKS</h2>
@@ -158,13 +159,13 @@ export default function Home() {
               { step: "02", title: "Take the Skill Assessment", desc: "Answer 10 quick questions about your game. We build you a personalized training plan based on your weaknesses.", icon: "🎯" },
               { step: "03", title: "Start Training & Earning XP", desc: "Complete drills, earn XP, build your streak, unlock badges, and climb the leaderboard. Watch your game transform.", icon: "🏀" },
             ].map((item, i) => (
-              <div key={i} style={{ display: "flex", gap: "28px", alignItems: "flex-start", textAlign: "left", background: "#111", border: "1px solid #1e1e1e", borderRadius: "20px", padding: "32px" }}>
+              <div key={i} style={{ display: "flex", gap: "28px", alignItems: "flex-start", textAlign: "left", background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "20px", padding: "32px" }}>
                 <div style={{ flexShrink: 0, width: "56px", height: "56px", borderRadius: "50%", background: "linear-gradient(135deg, #FF6B00, #FF9500)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>
                   {item.icon}
                 </div>
                 <div>
                   <div style={{ fontSize: "11px", color: "#FF6B00", fontWeight: 700, letterSpacing: "2px", marginBottom: "6px" }}>STEP {item.step}</div>
-                  <h3 style={{ fontSize: "20px", fontWeight: 900, color: "#fff", margin: "0 0 8px" }}>{item.title}</h3>
+                  <h3 style={{ fontSize: "20px", fontWeight: 900, color: "var(--text)", margin: "0 0 8px" }}>{item.title}</h3>
                   <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.7, margin: 0 }}>{item.desc}</p>
                 </div>
               </div>
@@ -180,9 +181,9 @@ export default function Home() {
           <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 900, margin: 0, letterSpacing: "-2px" }}>YOUR DASHBOARD</h2>
         </div>
         {/* Fake dashboard mockup */}
-        <div style={{ background: "#111", border: "1px solid #2a2a2a", borderRadius: "24px", padding: "32px", boxShadow: "0 40px 120px rgba(0,0,0,0.8), 0 0 60px rgba(255,107,0,0.07)", maxWidth: "760px", margin: "0 auto" }}>
+        <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "24px", padding: "32px", boxShadow: "0 40px 120px rgba(0,0,0,0.8), 0 0 60px rgba(255,107,0,0.07)", maxWidth: "760px", margin: "0 auto" }}>
           {/* Dashboard nav bar */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px", paddingBottom: "20px", borderBottom: "1px solid #1e1e1e" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px", paddingBottom: "20px", borderBottom: "1px solid var(--border)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <span style={{ fontSize: "20px" }}>🏀</span>
               <span style={{ fontSize: "16px", fontWeight: 900, background: "linear-gradient(90deg, #FF6B00, #FFD700)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>HOOPHERO</span>
@@ -195,7 +196,7 @@ export default function Home() {
           </div>
           {/* Welcome */}
           <div style={{ marginBottom: "28px" }}>
-            <h3 style={{ fontSize: "22px", fontWeight: 900, color: "#fff", margin: "0 0 4px" }}>Welcome back, Jordan 👋</h3>
+            <h3 style={{ fontSize: "22px", fontWeight: 900, color: "var(--text)", margin: "0 0 4px" }}>Welcome back, Jordan 👋</h3>
             <p style={{ color: "#444", margin: 0, fontSize: "13px" }}>Ready to level up today?</p>
           </div>
           {/* Streak banner */}
@@ -215,21 +216,21 @@ export default function Home() {
           </div>
           {/* Stats grid */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "14px", marginBottom: "24px" }}>
-            <div style={{ background: "#0d0d0d", border: "1px solid #1e1e1e", borderRadius: "14px", padding: "18px" }}>
-              <div style={{ fontSize: "11px", color: "#444", letterSpacing: "1px", marginBottom: "6px" }}>TOTAL XP</div>
+            <div style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: "14px", padding: "18px" }}>
+              <div style={{ fontSize: "11px", color: "var(--text3)", letterSpacing: "1px", marginBottom: "6px" }}>TOTAL XP</div>
               <div style={{ fontSize: "28px", fontWeight: 900, color: "#FF6B00" }}>1,850</div>
             </div>
-            <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,215,0,0.2)", borderRadius: "14px", padding: "18px" }}>
-              <div style={{ fontSize: "11px", color: "#444", letterSpacing: "1px", marginBottom: "6px" }}>LEVEL</div>
+            <div style={{ background: "var(--bg3)", border: "1px solid rgba(255,215,0,0.2)", borderRadius: "14px", padding: "18px" }}>
+              <div style={{ fontSize: "11px", color: "var(--text3)", letterSpacing: "1px", marginBottom: "6px" }}>LEVEL</div>
               <div style={{ fontSize: "28px", fontWeight: 900, color: "#FFD700" }}>Elite</div>
             </div>
-            <div style={{ background: "#0d0d0d", border: "1px solid #1e1e1e", borderRadius: "14px", padding: "18px" }}>
-              <div style={{ fontSize: "11px", color: "#444", letterSpacing: "1px", marginBottom: "6px" }}>DRILLS DONE</div>
+            <div style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: "14px", padding: "18px" }}>
+              <div style={{ fontSize: "11px", color: "var(--text3)", letterSpacing: "1px", marginBottom: "6px" }}>DRILLS DONE</div>
               <div style={{ fontSize: "28px", fontWeight: 900, color: "#10B981" }}>37</div>
             </div>
           </div>
           {/* XP progress bar */}
-          <div style={{ background: "#0d0d0d", border: "1px solid #1e1e1e", borderRadius: "12px", padding: "16px 20px" }}>
+          <div style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: "12px", padding: "16px 20px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
               <span style={{ fontSize: "12px", color: "#555" }}>Progress to Legend</span>
               <span style={{ fontSize: "12px", color: "#FF6B00", fontWeight: 700 }}>85%</span>
@@ -242,7 +243,7 @@ export default function Home() {
       </section>
 
       {/* SOCIAL PROOF / TESTIMONIALS */}
-      <section style={{ padding: "100px 40px", borderTop: "1px solid #1a1a1a" }}>
+      <section style={{ padding: "100px 40px", borderTop: "1px solid var(--border)" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "64px" }}>
             <p style={{ color: "#FF6B00", fontSize: "13px", fontWeight: 700, letterSpacing: "2px", marginBottom: "12px", textTransform: "uppercase" }}>Real Results</p>
@@ -250,7 +251,7 @@ export default function Home() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
             {testimonials.map((t) => (
-              <div key={t.name} style={{ background: "#111", border: "1px solid #1e1e1e", borderRadius: "20px", padding: "32px" }}>
+              <div key={t.name} style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "20px", padding: "32px" }}>
                 <div style={{ display: "flex", color: "#FF6B00", marginBottom: "20px", gap: "4px" }}>
                   {"★★★★★".split("").map((s, i) => <span key={i} style={{ fontSize: "16px" }}>{s}</span>)}
                 </div>
@@ -260,7 +261,7 @@ export default function Home() {
                     {t.avatar}
                   </div>
                   <div>
-                    <div style={{ fontSize: "14px", fontWeight: 800, color: "#fff" }}>{t.name}</div>
+                    <div style={{ fontSize: "14px", fontWeight: 800, color: "var(--text)" }}>{t.name}</div>
                     <div style={{ fontSize: "12px", color: "#555" }}>Age {t.age} • HoopHero member</div>
                   </div>
                 </div>
@@ -277,9 +278,9 @@ export default function Home() {
         <p style={{ color: "#555", marginBottom: "48px", fontSize: "16px" }}>Try 5 drills free. Upgrade anytime for full access.</p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "32px" }}>
           {/* Free tier */}
-          <div style={{ background: "#111", border: "1px solid #2a2a2a", borderRadius: "20px", padding: "32px 28px", textAlign: "left" }}>
+          <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "20px", padding: "32px 28px", textAlign: "left" }}>
             <div style={{ fontSize: "14px", fontWeight: 700, color: "#555", letterSpacing: "1px", marginBottom: "8px" }}>FREE TRIAL</div>
-            <div style={{ fontSize: "40px", fontWeight: 900, color: "#fff", marginBottom: "4px" }}>$0</div>
+            <div style={{ fontSize: "40px", fontWeight: 900, color: "var(--text)", marginBottom: "4px" }}>$0</div>
             <div style={{ fontSize: "13px", color: "#444", marginBottom: "24px" }}>forever</div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 0", display: "flex", flexDirection: "column", gap: "10px" }}>
               {["✅ 5 drills free", "✅ XP tracking", "✅ Streak system", "❌ Full drills library", "❌ Meal planner", "❌ Leaderboard"].map(item => (
@@ -307,19 +308,19 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section style={{ padding: "80px 40px", maxWidth: "720px", margin: "0 auto", borderTop: "1px solid #1a1a1a" }}>
+      <section style={{ padding: "80px 40px", maxWidth: "720px", margin: "0 auto", borderTop: "1px solid var(--border)" }}>
         <div style={{ textAlign: "center", marginBottom: "56px" }}>
           <p style={{ color: "#FF6B00", fontSize: "13px", fontWeight: 700, letterSpacing: "2px", marginBottom: "12px", textTransform: "uppercase" }}>Got Questions?</p>
           <h2 style={{ fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 900, margin: 0, letterSpacing: "-2px" }}>FAQ</h2>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {faqs.map((faq, i) => (
-            <div key={i} style={{ background: "#111", border: "1px solid #1e1e1e", borderRadius: "14px", overflow: "hidden" }}>
+            <div key={i} style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "14px", overflow: "hidden" }}>
               <button
                 onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 style={{ width: "100%", background: "transparent", border: "none", padding: "20px 24px", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", textAlign: "left" }}
               >
-                <span style={{ fontSize: "15px", fontWeight: 700, color: "#fff" }}>{faq.q}</span>
+                <span style={{ fontSize: "15px", fontWeight: 700, color: "var(--text)" }}>{faq.q}</span>
                 <span style={{ color: "#FF6B00", fontSize: "18px", flexShrink: 0, fontWeight: 700 }}>{openFaq === i ? "−" : "+"}</span>
               </button>
               {openFaq === i && (
@@ -333,7 +334,7 @@ export default function Home() {
       </section>
 
       {/* FINAL CTA */}
-      <section style={{ textAlign: "center", padding: "100px 40px", background: "linear-gradient(180deg, #0A0A0A 0%, #0f0800 50%, #0A0A0A 100%)", borderTop: "1px solid #1a1a1a" }}>
+      <section style={{ textAlign: "center", padding: "100px 40px", background: "var(--bg)", borderTop: "1px solid var(--border)" }}>
         <div style={{ position: "relative", display: "inline-block", marginBottom: "24px" }}>
           <div style={{ position: "absolute", inset: "-40px", background: "radial-gradient(ellipse, rgba(255,107,0,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
           <span style={{ fontSize: "64px" }}>🏀</span>
@@ -354,21 +355,23 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: "1px solid #1a1a1a", padding: "40px 40px" }}>
+      <footer style={{ borderTop: "1px solid var(--border)", padding: "40px 40px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <span style={{ fontSize: "22px" }}>🏀</span>
             <span style={{ fontSize: "18px", fontWeight: 900, background: "linear-gradient(90deg, #FF6B00, #FFD700)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>HOOPHERO</span>
           </div>
-          <p style={{ color: "#333", fontSize: "13px", margin: 0 }}>© 2026 HoopHero. Built for hoopers who want to be great.</p>
+          <p style={{ color: "var(--text3)", fontSize: "13px", margin: 0 }}>© 2026 HoopHero. Built for hoopers who want to be great.</p>
           <div style={{ display: "flex", gap: "24px" }}>
-            <Link href="/login" style={{ color: "#444", textDecoration: "none", fontSize: "13px" }}>Login</Link>
-            <Link href="/signup" style={{ color: "#444", textDecoration: "none", fontSize: "13px" }}>Sign Up</Link>
-            <Link href="/drills" style={{ color: "#444", textDecoration: "none", fontSize: "13px" }}>Drills</Link>
+            <Link href="/login" style={{ color: "var(--text3)", textDecoration: "none", fontSize: "13px" }}>Login</Link>
+            <Link href="/signup" style={{ color: "var(--text3)", textDecoration: "none", fontSize: "13px" }}>Sign Up</Link>
+            <Link href="/drills" style={{ color: "var(--text3)", textDecoration: "none", fontSize: "13px" }}>Drills</Link>
             <Link href="/subscribe" style={{ color: "#FF6B00", textDecoration: "none", fontSize: "13px", fontWeight: 700 }}>Subscribe</Link>
           </div>
         </div>
       </footer>
+
+      <ThemeToggle />
     </div>
   );
 }

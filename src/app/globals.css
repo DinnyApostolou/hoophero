@@ -6,16 +6,37 @@
   --font-inter: "Inter", system-ui, sans-serif;
 }
 
+:root[data-theme="dark"] {
+  --bg: #0A0A0A;
+  --bg2: #111;
+  --bg3: #1a1a1a;
+  --border: #222;
+  --text: #ffffff;
+  --text2: #aaaaaa;
+  --text3: #666666;
+}
+
+:root[data-theme="light"] {
+  --bg: #f8f8f8;
+  --bg2: #ffffff;
+  --bg3: #f0f0f0;
+  --border: #e0e0e0;
+  --text: #0a0a0a;
+  --text2: #444444;
+  --text3: #888888;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  background-color: #0A0A0A;
-  color: #ffffff;
+  background-color: var(--bg);
+  color: var(--text);
   font-family: var(--font-inter);
   margin: 0;
   padding: 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Custom scrollbar */

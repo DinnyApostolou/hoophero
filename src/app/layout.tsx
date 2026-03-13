@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ThemeProvider } from "@/lib/theme";
 
 export const metadata: Metadata = {
   title: "HoopHero — Level Up Your Game",
@@ -23,8 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body style={{ backgroundColor: "#0A0A0A", color: "#ffffff", margin: 0, fontFamily: "system-ui, sans-serif" }}>
-        {children}
+      <body style={{ margin: 0, fontFamily: "system-ui, sans-serif" }}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
