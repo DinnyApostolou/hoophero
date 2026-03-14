@@ -83,9 +83,9 @@ export default function Home() {
           🔥 GAMIFIED BASKETBALL TRAINING
         </div>
         <h1 style={{ fontSize: "clamp(52px, 9vw, 96px)", fontWeight: 900, lineHeight: 1.0, margin: "0 0 28px", letterSpacing: "-3px" }}>
-          BECOME A{" "}
+          TRAIN LIKE{" "}
           <span style={{ background: "linear-gradient(90deg, #FF6B00, #FFD700)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-            HOOPHERO
+            A PRO
           </span>
         </h1>
         <p style={{ fontSize: "clamp(16px, 2.5vw, 22px)", color: "#777", lineHeight: 1.6, marginBottom: "44px", maxWidth: "640px", margin: "0 auto 44px" }}>
@@ -340,9 +340,9 @@ export default function Home() {
           <span style={{ fontSize: "64px" }}>🏀</span>
         </div>
         <h2 style={{ fontSize: "clamp(40px, 7vw, 72px)", fontWeight: 900, margin: "0 0 20px", letterSpacing: "-3px" }}>
-          READY TO BECOME A{" "}
+          READY TO{" "}
           <span style={{ background: "linear-gradient(90deg, #FF6B00, #FFD700)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-            HERO?
+            DOMINATE?
           </span>
         </h2>
         <p style={{ color: "#555", fontSize: "18px", marginBottom: "40px", maxWidth: "500px", margin: "0 auto 40px" }}>
